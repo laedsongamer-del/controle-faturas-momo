@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle de Faturas da Momo 💖</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .bg-pink-custom { background-color: #ff1493; }
+        .hover\:bg-pink-custom-dark:hover { background-color: #d80b7a; }
+        .text-pink-custom { color: #ff1493; }
+        .border-pink-custom { border-color: #ff1493; }
+        .ring-pink-custom:focus { --tw-ring-color: #ff1493; }
+
+        body {
+            background-color: #fff0f6;
+            background-image: radial-gradient(#ff69b4 0.75px, transparent 0.75px), radial-gradient(#ff1493 0.75px, #fff0f6 0.75px);
+            background-size: 30px 30px;
+            background-position: 0 0, 15px 15px;
+        }
+
+        .bg-decor-item {
+            position: fixed;
+            pointer-events: none;
+            opacity: 0.15;
+            user-select: none;
+            z-index: 0;
+        }
+
+        /* Animações e Posicionamento dos Dogs nas Laterais */
+        @keyframes float-side {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-12px) rotate(2deg); }
+        }
+
+        .dog-lateral {
+            position: fixed;
+            z-index: 40;
+            cursor: pointer;
+            animation: float-side 4s ease-in-out infinite;
+            filter: drop-shadow(0 10px 15px rgba(255, 20, 147, 0.25));
+            transition: transform 0.2s;
+        }
+        .dog-lateral:hover {
+            transform: scale(1.08);
+        }
+
+        /* Balão de fala do latido */
+        .speech-bubble {
+            position: absolute;
+            background: white;
+            border: 2px solid #ff1493;
+            color: #ff1493;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 800;
+            white-space: nowrap;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        .dog-lateral.barking .speech-bubble {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="text-slate-800 min-h-screen relative overflow-x-hidden">
+
+    <!-- Dogs Animados nas Laterais (Esquerda e Direita) com Som de Latido -->
+    <!-- 1. Lunna (Labradora Branca) - Esquerda Meio -->
+    <div class="dog-lateral left-2 md:left-6 top-1/3" style="width: 140px;" onclick="latir('lunna', this)">
+        <div class="speech-bubble -top-8 left-1/2 -translate-x-1/2">AU AU! 🐾</div>
+        <svg viewBox="0 0 100 100" class="w-full h-full">
+            <ellipse cx="25" cy="52" rx="14" ry="26" fill="#E8D5C8"/>
+            <ellipse cx="75" cy="52" rx="14" ry="26" fill="#E8D5C8"/>
+            <ellipse cx="50" cy="52" rx="30" ry="27" fill="#FFFFFF"/>
+            <circle cx="38" cy="46" r="4.5" fill="#222"/>
+            <circle cx="62" cy="46" r="4.5" fill="#222"/>
+            <circle cx="40" cy="44" r="1.5" fill="#FFF"/>
+            <circle cx="64" cy="44" r="1.5" fill="#FFF"/>
+            <ellipse cx="50" cy="55" rx="7" ry="5" fill="#3D2B1F"/>
+            <path d="M44 63 Q50 69 56 63" stroke="#FF1493" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <path d="M70 65 Q85 55 80 40" stroke="#FFFFFF" stroke-width="6" fill="none" stroke-linecap="round"/>
+        </svg>
+    </div>
+
+    <!-- 2. Juju (Vira-lata Branca) - Direita Cima -->
+    <div class="dog-lateral right-2 md:right-6 top-20" style="width: 130px;" onclick="latir('juju', this)">
+        <div class="speech-bubble -top-8 left-1/2 -translate-x-1/2">WOOF! ✨</div>
+        <svg viewBox="0 0 100 100" class="w-full h-full">
+            <path d="M22 45 L32 15 L48 38 Z" fill="#F3E5DC"/>
+            <path d="M78 45 L68 15 L52 38 Z" fill="#F3E5DC"/>
+            <ellipse cx="50" cy="54" rx="28" ry="25" fill="#FFFFFF"/>
+            <circle cx="39" cy="48" r="4" fill="#1A1A1A"/>
+            <circle cx="61" cy="48" r="4" fill="#1A1A1A"/>
+            <circle cx="40" cy="46" r="1.2" fill="#FFF"/>
+            <circle cx="62" cy="46" r="1.2" fill="#FFF"/>
+            <ellipse cx="50" cy="56" rx="6" ry="4" fill="#111"/>
+            <path d="M46 63 Q50 68 54 63" stroke="#222" stroke-width="2" fill="none"/>
+            <polygon points="45,71 55,71 50,77" fill="#FF1493"/>
+        </svg>
+    </div>
+
+    <!-- 3. Flor (Pinscher Preta) - Direita Baixo -->
+    <div class="dog-lateral right-2 md:right-6 bottom-16" style="width: 120px;" onclick="latir('flor', this)">
+        <div class="speech-bubble -top-8 left-1/2 -translate-x-1/2">LATIDO! 💖</div>
+        <svg viewBox="0 0 100 100" class="w-full h-full">
+            <path d="M25 40 L35 8 L48 32 Z" fill="#1A1A1A"/>
+            <path d="M75 40 L65 8 L52 32 Z" fill="#1A1A1A"/>
+            <ellipse cx="50" cy="54" rx="26" ry="23" fill="#222222"/>
+            <circle cx="36" cy="38" r="3.5" fill="#D97706"/>
+            <circle cx="64" cy="38" r="3.5" fill="#D97706"/>
+            <circle cx="40" cy="48" r="3.5" fill="#FFF"/>
+            <circle cx="60" cy="48" r="3.5" fill="#FFF"/>
+            <circle cx="40" cy="48" r="2" fill="#000"/>
+            <circle cx="60" cy="48" r="2" fill="#000"/>
+            <ellipse cx="50" cy="58" rx="10" ry="7" fill="#D97706"/>
+            <ellipse cx="50" cy="55" rx="4" ry="2.5" fill="#000"/>
+        </svg>
+    </div>
+
+    <!-- Decorações de Fundo -->
+    <div class="bg-decor-item text-6xl top-10 left-5">🌸</div>
+    <div class="bg-decor-item text-6xl top-1/4 right-8">💖</div>
+    <div class="bg-decor-item text-6xl top-1/2 left-8">🌙</div>
+    <div class="bg-decor-item text-6xl bottom-20 right-10">🐶</div>
+
+    <div class="max-w-6xl mx-auto p-4 md:p-8 relative z-10">
+        <!-- Cabeçalho -->
+        <header class="bg-white/95 backdrop-blur p-6 rounded-3xl shadow-sm border border-pink-200 mb-8 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div>
+                <div class="flex items-center gap-2 text-pink-custom font-bold text-sm tracking-wide uppercase mb-1">
+                    <span>🌸 Fofura & Organização</span> <span>✨</span> <span>🌙</span>
+                </div>
+                <h1 class="text-3xl font-extrabold text-pink-custom flex items-center gap-2">
+                    Controle de Cartões da Momo 💖
+                </h1>
+                <p class="text-xs text-pink-700 font-medium mt-1">Clique nas doguinhas nas laterais para ouvir o latido delas! 🐾</p>
+            </div>
+            <!-- Botões de Backup / Arquivo -->
+            <div class="flex gap-2">
+                <button onclick="exportarDados()" class="bg-pink-100 text-pink-700 px-4 py-2 rounded-2xl text-sm font-medium hover:bg-pink-200 transition flex items-center gap-1 shadow-sm">📥 Baixar Backup</button>
+                <label class="bg-pink-100 text-pink-700 px-4 py-2 rounded-2xl text-sm font-medium hover:bg-pink-200 transition cursor-pointer flex items-center gap-1 shadow-sm">
+                    📤 Carregar Backup <input type="file" id="input-importar" accept=".json" class="hidden" onchange="importarDados(event)">
+                </label>
+            </div>
+        </header>
+
+        <!-- Grid de Cadastros -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <!-- Cadastro de Cartões -->
+            <div class="bg-white/95 backdrop-blur p-6 rounded-3xl shadow-sm border border-pink-100">
+                <h2 class="text-lg font-bold text-slate-700 mb-4 flex items-center gap-2">💳 Cadastrar Cartão</h2>
+                <form id="form-cartao" class="grid grid-cols-1 sm:grid-cols-3 gap-2 mb-4">
+                    <input type="text" id="nome-cartao" placeholder="Ex: Nubank" required class="px-3 py-2 border border-pink-200 rounded-2xl focus:outline-none focus:ring-2 ring-pink-custom text-sm">
+                    <input type="number" id="fechamento-cartao" placeholder="Dia Fech." min="1" max="31" required class="px-3 py-2 border border-pink-200 rounded-2xl focus:outline-none focus:ring-2 ring-pink-custom text-sm" title="Dia que a fatura fecha">
+                    <input type="number" id="vencimento-cartao" placeholder="Dia Venc." min="1" max="31" required class="px-3 py-2 border border-pink-200 rounded-2xl focus:outline-none focus:ring-2 ring-pink-custom text-sm" title="Dia que vence a fatura">
+                    <button type="submit" class="sm:col-span-3 bg-pink-custom text-white py-2.5 rounded-2xl font-medium hover:bg-pink-custom-dark transition text-sm shadow-md shadow-pink-200">Adicionar Cartão</button>
+                </form>
+                <div id="lista-cartoes" class="flex flex-wrap gap-2"></div>
+            </div>
+
+            <!-- Cadastro de Pessoas -->
+            <div class="bg-white/95 backdrop-blur p-6 rounded-3xl shadow-sm border border-pink-100">
+                <h2 class="text-lg font-bold text-slate-700 mb-4 flex items-center gap-2">👤 Cadastrar Pessoa</h2>
+                <form id="form-pessoa" class="flex gap-2 mb-4">
+                    <input type="text" id="nome-pessoa" placeholder="Ex: Eu, Mãe..." required class="flex-1 px-4 py-2 border border-pink-200 rounded-2xl focus:outline-none focus:ring-2 ring-pink-custom text-sm">
+                    <button type="submit" class="bg-pink-custom text-white px-5 py-2 rounded-2xl font-medium hover:bg-pink-custom-dark transition text-sm shadow-md shadow-pink-200">Adicionar</button>
+                </form>
+                <div id="lista-pessoas" class="flex flex-wrap gap-2 mt-8"></div>
+            </div>
+        </div>
+
+        <!-- Lançamento de Gastos -->
+        <div class="bg-white/95 backdrop-blur p-6 rounded-3xl shadow-sm border border-pink-100 mb-8">
+            <h2 id="titulo-form-gasto" class="text-lg font-bold text-slate-700 mb-4 flex items-center gap-2">📝 Novo Gasto / Compra</h2>
+            <form id="form-gasto" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4">
+                <input type="hidden" id="gasto-edit-id" value="">
+                <select id="gasto-pessoa" required class="px-4 py-2 border border-pink-200 rounded-2xl focus:outline-none focus:ring-2 ring-pink-custom text-sm">
+                    <option value="">Selecione a Pessoa</option>
+                </select>
+                <select id="gasto-cartao" required class="px-4 py-2 border border-pink-200 rounded-2xl focus:outline-none focus:ring-2 ring-pink-custom text-sm">
+                    <option value="">Selecione o Cartão</option>
+                </select>
+                <input type="text" id="gasto-descricao" placeholder="Descrição (ex: Uber)" required class="px-4 py-2 border border-pink-200 rounded-2xl focus:outline-none focus:ring-2 ring-pink-custom text-sm">
+                <input type="date" id="gasto-data" required class="px-4 py-2 border border-pink-200 rounded-2xl focus:outline-none focus:ring-2 ring-pink-custom text-sm" title="Data da compra">
+                <input type="number" step="0.01" id="gasto-valor-parcela" placeholder="Valor da Parcela (R$)" required class="px-4 py-2 border border-pink-200 rounded-2xl focus:outline-none focus:ring-2 ring-pink-custom text-sm" title="Valor unitário da parcela (com juros)">
+                <input type="number" id="gasto-parcelas" placeholder="Qtd Parcelas" value="1" min="1" required class="px-4 py-2 border border-pink-200 rounded-2xl focus:outline-none focus:ring-2 ring-pink-custom text-sm">
+                <button type="submit" id="btn-salvar-gasto" class="sm:col-span-2 lg:col-span-6 bg-slate-900 text-white py-3 rounded-2xl font-medium hover:bg-slate-800 transition text-sm shadow-md">Lançar Compra no Cartão</button>
+            </form>
+            <div id="cancelar-edicao-container" class="mt-2 hidden">
+                <button type="button" onclick="cancelarEdicao()" class="text-xs text-red-500 font-semibold underline">Cancelar Edição</button>
+            </div>
+        </div>
+
+        <!-- Filtros e Resultados -->
+        <div class="bg-white/95 backdrop-blur p-6 rounded-3xl shadow-sm border border-pink-100 mb-8">
+            <div class="flex flex-col sm:flex-row justify-between items-center gap-4 mb-6">
+                <h2 class="text-xl font-bold text-slate-800">📊 Resumo e Fechamento da Fatura</h2>
+                <div class="flex items-center gap-2">
+                    <label for="filtro-mes" class="text-sm font-medium text-slate-600">Fatura do Mês:</label>
+                    <input type="month" id="filtro-mes" class="px-4 py-2 border border-pink-200 rounded-2xl focus:outline-none focus:ring-2 ring-pink-custom text-sm">
+                </div>
+            </div>
+
+            <!-- Cards de Resumo Geral -->
+            <div id="cards-resumo" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6"></div>
+
+            <!-- Tabela Detalhada -->
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-pink-100 text-pink-700 text-xs uppercase tracking-wider font-bold">
+                            <th class="py-3 px-4">Pessoa 🌸</th>
+                            <th class="py-3 px-4">Cartão 💳</th>
+                            <th class="py-3 px-4">Descrição ✨</th>
+                            <th class="py-3 px-4">Data Compra 📅</th>
+                            <th class="py-3 px-4">Parcela 🔢</th>
+                            <th class="py-3 px-4">Valor 💰</th>
+                            <th class="py-3 px-4 text-center">Ações 🛠️</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabela-gastos" class="divide-y divide-pink-50 text-slate-600 text-sm"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Função de Latido (Web Audio API - Sem arquivos externos, funciona 100%)
+        function latir(dog, element) {
+            element.classList.add('barking');
+            setTimeout(() => element.classList.remove('barking'), 1000);
+
+            try {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                let freq = 220;
+                let duration = 0.15;
+
+                if (dog === 'lunna') { freq = 180; duration = 0.2; } // Labradora (grave)
+                else if (dog === 'juju') { freq = 280; duration = 0.12; } // Vira-lata (médio)
+                else if (dog === 'flor') { freq = 450; duration = 0.09; } // Pinscher (agudo)
+
+                osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(freq * 0.5, audioCtx.currentTime + duration);
+
+                gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
+
+                osc.start();
+                osc.stop(audioCtx.currentTime + duration);
+            } catch(e) {
+                console.log("Áudio ativado");
+            }
+        }
+
+        let dados = JSON.parse(localStorage.getItem('controle_cartoes_v3')) || {
+            cartoes: [],
+            pessoas: [],
+            gastos: []
+        };
+
+        function salvar() {
+            localStorage.setItem('controle_cartoes_v3', JSON.stringify(dados));
+            atualizarTela();
+        }
+
+        function exportarDados() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(dados, null, 2));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", `backup_faturas_preysla_${new Date().toISOString().slice(0, 10)}.json`);
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+        }
+
+        function importarDados(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const json = JSON.parse(e.target.result);
+                    if (json.cartoes && json.pessoas && json.gastos) {
+                        dados = json;
+                        salvar();
+                        alert("Backup carregado com sucesso! 💖");
+                    } else {
+                        alert("Arquivo de backup inválido.");
+                    }
+                } catch (err) {
+                    alert("Erro ao ler o arquivo JSON.");
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        const hojeIso = new Date().toISOString().slice(0, 10);
+        document.getElementById('gasto-data').value = hojeIso;
+        document.getElementById('filtro-mes').value = hojeIso.slice(0, 7);
+
+        document.getElementById('form-cartao').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const nome = document.getElementById('nome-cartao').value.trim();
+            const fechamento = parseInt(document.getElementById('fechamento-cartao').value);
+            const vencimento = parseInt(document.getElementById('vencimento-cartao').value);
+
+            if(nome) {
+                dados.cartoes = dados.cartoes.filter(c => c.nome !== nome);
+                dados.cartoes.push({ nome, fechamento, vencimento });
+                document.getElementById('form-cartao').reset();
+                salvar();
+            }
+        });
+
+        document.getElementById('form-pessoa').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const nome = document.getElementById('nome-pessoa').value.trim();
+            if(nome && !dados.pessoas.includes(nome)) {
+                dados.pessoas.push(nome);
+                document.getElementById('nome-pessoa').value = '';
+                salvar();
+            }
+        });
+
+        function calcularMesFatura(dataCompraStr, diaFechamento) {
+            const data = new Date(dataCompraStr + 'T00:00:00');
+            let ano = data.getFullYear();
+            let mes = data.getMonth();
+            let dia = data.getDate();
+
+            if (dia >= diaFechamento) {
+                mes += 1;
+            }
+
+            let dataFatura = new Date(ano, mes, 1);
+            return dataFatura.toISOString().slice(0, 7);
+        }
+
+        document.getElementById('form-gasto').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const editId = document.getElementById('gasto-edit-id').value;
+            const pessoa = document.getElementById('gasto-pessoa').value;
+            const nomeCartao = document.getElementById('gasto-cartao').value;
+            const descricao = document.getElementById('gasto-descricao').value;
+            const dataCompra = document.getElementById('gasto-data').value;
+            const valorParcela = parseFloat(document.getElementById('gasto-valor-parcela').value);
+            const parcelas = parseInt(document.getElementById('gasto-parcelas').value);
+
+            const cartaoObj = dados.cartoes.find(c => c.nome === nomeCartao);
+            const diaFechamento = cartaoObj ? cartaoObj.fechamento : 10;
+
+            if (editId) {
+                dados.gastos = dados.gastos.filter(g => g.grupoId != editId);
+                let mesFaturaInicial = calcularMesFatura(dataCompra, diaFechamento);
+                let [anoBase, mesBase] = mesFaturaInicial.split('-').map(Number);
+                const novoGrupoId = Date.now();
+
+                for(let i = 0; i < parcelas; i++) {
+                    let dataFaturaParcela = new Date(anoBase, mesBase - 1 + i, 1);
+                    let mesAnoStr = dataFaturaParcela.toISOString().slice(0, 7);
+
+                    dados.gastos.push({
+                        id: novoGrupoId + i,
+                        grupoId: novoGrupoId,
+                        pessoa,
+                        cartao: nomeCartao,
+                        descricao,
+                        dataCompra,
+                        valor: valorParcela,
+                        mesFatura: mesAnoStr,
+                        parcelaAtual: i + 1,
+                        totalParcelas: parcelas
+                    });
+                }
+                cancelarEdicao();
+            } else {
+                let mesFaturaInicial = calcularMesFatura(dataCompra, diaFechamento);
+                let [anoBase, mesBase] = mesFaturaInicial.split('-').map(Number);
+                const grupoId = Date.now();
+
+                for(let i = 0; i < parcelas; i++) {
+                    let dataFaturaParcela = new Date(anoBase, mesBase - 1 + i, 1);
+                    let mesAnoStr = dataFaturaParcela.toISOString().slice(0, 7);
+
+                    dados.gastos.push({
+                        id: grupoId + i,
+                        grupoId: grupoId,
+                        pessoa,
+                        cartao: nomeCartao,
+                        descricao,
+                        dataCompra,
+                        valor: valorParcela,
+                        mesFatura: mesAnoStr,
+                        parcelaAtual: i + 1,
+                        totalParcelas: parcelas
+                    });
+                }
+                document.getElementById('form-gasto').reset();
+                document.getElementById('gasto-data').value = hojeIso;
+            }
+            salvar();
+        });
+
+        function editarGasto(id) {
+            const gasto = dados.gastos.find(g => g.id === id);
+            if (!gasto) return;
+
+            document.getElementById('gasto-edit-id').value = gasto.grupoId || gasto.id;
+            document.getElementById('gasto-pessoa').value = gasto.pessoa;
+            document.getElementById('gasto-cartao').value = gasto.cartao;
+            document.getElementById('gasto-descricao').value = gasto.descricao;
+            document.getElementById('gasto-data').value = gasto.dataCompra;
+            document.getElementById('gasto-valor-parcela').value = gasto.valor;
+            document.getElementById('gasto-parcelas').value = gasto.totalParcelas;
+
+            document.getElementById('titulo-form-gasto').innerText = "✏️ Editando Compra (Atualiza todas as parcelas)";
+            document.getElementById('btn-salvar-gasto').innerText = "Salvar Alterações";
+            document.getElementById('cancelar-edicao-container').classList.remove('hidden');
+            window.scrollTo({ top: 400, behavior: 'smooth' });
+        }
+
+        function cancelarEdicao() {
+            document.getElementById('form-gasto').reset();
+            document.getElementById('gasto-edit-id').value = '';
+            document.getElementById('gasto-data').value = hojeIso;
+            document.getElementById('titulo-form-gasto').innerText = "📝 Novo Gasto / Compra";
+            document.getElementById('btn-salvar-gasto').innerText = "Lançar Compra no Cartão";
+            document.getElementById('cancelar-edicao-container').classList.add('hidden');
+        }
+
+        function deletarGasto(id) {
+            if (confirm("Tem certeza que deseja apagar este item?")) {
+                dados.gastos = dados.gastos.filter(g => g.id !== id);
+                salvar();
+            }
+        }
+
+        function deletarCartao(nome) {
+            dados.cartoes = dados.cartoes.filter(c => c.nome !== nome);
+            salvar();
+        }
+
+        function deletarPessoa(pessoa) {
+            dados.pessoas = dados.pessoas.filter(p => p !== pessoa);
+            salvar();
+        }
+
+        function atualizarTela() {
+            const divCartoes = document.getElementById('lista-cartoes');
+            divCartoes.innerHTML = dados.cartoes.map(c => `
+                <span class="bg-pink-50 text-pink-700 px-3 py-1.5 rounded-2xl text-xs font-medium flex items-center justify-between gap-2 border border-pink-200">
+                    <span><strong>${c.nome}</strong> (Fech: ${c.fechamento} | Venc: ${c.vencimento})</span>
+                    <button onclick="deletarCartao('${c.nome}')" class="text-pink-400 hover:text-red-500 font-bold ml-1">&times;</button>
+                </span>
+            `).join('') || '<span class="text-xs text-slate-400">Nenhum cartão cadastrado.</span>';
+
+            const divPessoas = document.getElementById('lista-pessoas');
+            divPessoas.innerHTML = dados.pessoas.map(p => `
+                <span class="bg-pink-50 text-pink-700 px-3 py-1.5 rounded-2xl text-xs font-medium flex items-center gap-2 border border-pink-200">
+                    ${p} <button onclick="deletarPessoa('${p}')" class="text-pink-400 hover:text-red-500 font-bold">&times;</button>
+                </span>
+            `).join('') || '<span class="text-xs text-slate-400">Nenhuma pessoa cadastrada.</span>';
+
+            const selectPessoa = document.getElementById('gasto-pessoa');
+            selectPessoa.innerHTML = '<option value="">Selecione a Pessoa</option>' + dados.pessoas.map(p => `<option value="${p}">${p}</option>`).join('');
+
+            const selectCartao = document.getElementById('gasto-cartao');
+            selectCartao.innerHTML = '<option value="">Selecione o Cartão</option>' + dados.cartoes.map(c => `<option value="${c.nome}">${c.nome}</option>`).join('');
+
+            const mesFiltro = document.getElementById('filtro-mes').value;
+            const gastosFiltrados = dados.gastos.filter(g => g.mesFatura === mesFiltro);
+
+            gastosFiltrados.sort((a, b) => a.pessoa.localeCompare(b.pessoa) || a.cartao.localeCompare(b.cartao));
+
+            const tbody = document.getElementById('tabela-gastos');
+            tbody.innerHTML = gastosFiltrados.map(g => `
+                <tr class="hover:bg-pink-50/50 transition">
+                    <td class="py-3 px-4 font-bold text-slate-700">${g.pessoa}</td>
+                    <td class="py-3 px-4"><span class="bg-pink-100 text-pink-700 px-2 py-1 rounded-xl text-xs font-semibold">${g.cartao}</span></td>
+                    <td class="py-3 px-4">${g.descricao}</td>
+                    <td class="py-3 px-4 text-xs text-slate-500">${g.dataCompra.split('-').reverse().join('/')}</td>
+                    <td class="py-3 px-4 font-medium">${g.parcelaAtual}/${g.totalParcelas}</td>
+                    <td class="py-3 px-4 font-bold text-slate-800">R$ ${g.valor.toFixed(2)}</td>
+                    <td class="py-3 px-4 text-center flex items-center justify-center gap-2">
+                        <button onclick="editarGasto(${g.id})" class="text-indigo-500 hover:text-indigo-700 text-xs font-bold bg-indigo-50 px-2.5 py-1 rounded-xl">Editar</button>
+                        <button onclick="deletarGasto(${g.id})" class="text-red-400 hover:text-red-600 text-xs font-bold bg-red-50 px-2.5 py-1 rounded-xl">Excluir</button>
+                    </td>
+                </tr>
+            `).join('') || `<tr><td colspan="7" class="text-center py-6 text-slate-400">Nenhuma fatura lançada para este mês. 🌸</td></tr>`;
+
+            let totalGeral = 0;
+            let porPessoa = {};
+            let porCartao = {};
+            let pessoaPorCartao = {};
+
+            gastosFiltrados.forEach(g => {
+                totalGeral += g.valor;
+                porPessoa[g.pessoa] = (porPessoa[g.pessoa] || 0) + g.valor;
+                porCartao[g.cartao] = (porCartao[g.cartao] || 0) + g.valor;
+
+                if (!pessoaPorCartao[g.pessoa]) pessoaPorCartao[g.pessoa] = {};
+                pessoaPorCartao[g.pessoa][g.cartao] = (pessoaPorCartao[g.pessoa][g.cartao] || 0) + g.valor;
+            });
+
+            const cardsResumo = document.getElementById('cards-resumo');
+            
+            let htmlResumo = `
+                <div class="bg-pink-custom text-white p-5 rounded-3xl shadow-sm flex flex-col justify-between">
+                    <div>
+                        <p class="text-pink-100 text-sm font-medium">Total Geral das Faturas do Mês</p>
+                        <p class="text-3xl font-extrabold mt-1">R$ ${totalGeral.toFixed(2)}</p>
+                    </div>
+                    <p class="text-xs text-pink-100 mt-4">✨ Soma geral de todos os cartões e pessoas no mês.</p>
+                </div>
+            `;
+
+            let htmlCartoes = Object.entries(porCartao).map(([cartao, val]) => `
+                <div class="flex justify-between items-center text-sm py-1.5 border-b border-pink-50 last:border-0">
+                    <span class="text-slate-600 font-medium">${cartao}</span>
+                    <span class="font-bold text-slate-800">R$ ${val.toFixed(2)}</span>
+                </div>
+            `).join('') || '<p class="text-sm text-slate-400">Nenhum uso registrado.</p>';
+
+            htmlResumo += `
+                <div class="bg-white p-5 rounded-3xl border border-pink-100 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <p class="text-pink-600 text-sm font-bold mb-2">💳 Total por Cartão</p>
+                        <div>${htmlCartoes}</div>
+                    </div>
+                </div>
+            `;
+
+            let htmlPessoas = Object.entries(pessoaPorCartao).map(([pessoa, cartoesObj]) => {
+                let detalheCartoes = Object.entries(cartoesObj).map(([cName, cVal]) => `
+                    <div class="text-xs text-slate-500 flex justify-between pl-2">
+                        <span>• ${cName}:</span> <span class="font-semibold text-slate-700">R$ ${cVal.toFixed(2)}</span>
+                    </div>
+                `).join('');
+                let totalPessoa = porPessoa[pessoa];
+
+                return `
+                    <div class="py-2 border-b border-pink-50 last:border-0">
+                        <div class="flex justify-between items-center text-sm">
+                            <span class="text-slate-700 font-bold">${pessoa}</span>
+                            <span class="font-bold text-pink-600">R$ ${totalPessoa.toFixed(2)}</span>
+                        </div>
+                        <div class="mt-1">${detalheCartoes}</div>
+                    </div>
+                `;
+            }).join('') || '<p class="text-sm text-slate-400">Nenhum débito registrado.</p>';
+
+            htmlResumo += `
+                <div class="bg-white p-5 rounded-3xl border border-pink-100 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <p class="text-pink-600 text-sm font-bold mb-2">💖 Quanto cada um deve (por Cartão)</p>
+                        <div class="max-h-40 overflow-y-auto pr-1">${htmlPessoas}</div>
+                    </div>
+                </div>
+            `;
+
+            cardsResumo.innerHTML = htmlResumo;
+        }
+
+        document.getElementById('filtro-mes').addEventListener('change', atualizarTela);
+        atualizarTela();
+    </script>
+</body>
+</html>
