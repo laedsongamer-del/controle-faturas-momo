@@ -27,7 +27,6 @@
             z-index: 0;
         }
 
-        /* Animações e Posicionamento dos Dogs nas Laterais */
         @keyframes float-side {
             0%, 100% { transform: translateY(0px) rotate(0deg); }
             50% { transform: translateY(-12px) rotate(2deg); }
@@ -39,13 +38,16 @@
             cursor: pointer;
             animation: float-side 4s ease-in-out infinite;
             filter: drop-shadow(0 10px 15px rgba(255, 20, 147, 0.25));
-            transition: transform 0.2s;
+            transition: opacity 0.3s ease, transform 0.2s ease;
         }
         .dog-lateral:hover {
             transform: scale(1.08);
         }
+        .dogs-hidden {
+            opacity: 0 !important;
+            pointer-events: none !important;
+        }
 
-        /* Balão de fala do latido */
         .speech-bubble {
             position: absolute;
             background: white;
@@ -68,57 +70,59 @@
 </head>
 <body class="text-slate-800 min-h-screen relative overflow-x-hidden">
 
-    <!-- Dogs Animados nas Laterais (Esquerda e Direita) com Som de Latido -->
-    <!-- 1. Lunna (Labradora Branca) - Esquerda Meio -->
-    <div class="dog-lateral left-2 md:left-6 top-1/3" style="width: 140px;" onclick="latir('lunna', this)">
-        <div class="speech-bubble -top-8 left-1/2 -translate-x-1/2">AU AU! 🐾</div>
-        <svg viewBox="0 0 100 100" class="w-full h-full">
-            <ellipse cx="25" cy="52" rx="14" ry="26" fill="#E8D5C8"/>
-            <ellipse cx="75" cy="52" rx="14" ry="26" fill="#E8D5C8"/>
-            <ellipse cx="50" cy="52" rx="30" ry="27" fill="#FFFFFF"/>
-            <circle cx="38" cy="46" r="4.5" fill="#222"/>
-            <circle cx="62" cy="46" r="4.5" fill="#222"/>
-            <circle cx="40" cy="44" r="1.5" fill="#FFF"/>
-            <circle cx="64" cy="44" r="1.5" fill="#FFF"/>
-            <ellipse cx="50" cy="55" rx="7" ry="5" fill="#3D2B1F"/>
-            <path d="M44 63 Q50 69 56 63" stroke="#FF1493" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-            <path d="M70 65 Q85 55 80 40" stroke="#FFFFFF" stroke-width="6" fill="none" stroke-linecap="round"/>
-        </svg>
-    </div>
+    <!-- Dogs Animados nas Laterais -->
+    <div id="container-dogs">
+        <!-- 1. Lunna (Labradora Branca) -->
+        <div class="dog-lateral left-2 md:left-6 top-1/3 w-24 md:w-32" onclick="latir('lunna', this)">
+            <div class="speech-bubble -top-8 left-1/2 -translate-x-1/2">AU AU! 🐾</div>
+            <svg viewBox="0 0 100 100" class="w-full h-full">
+                <ellipse cx="25" cy="52" rx="14" ry="26" fill="#E8D5C8"/>
+                <ellipse cx="75" cy="52" rx="14" ry="26" fill="#E8D5C8"/>
+                <ellipse cx="50" cy="52" rx="30" ry="27" fill="#FFFFFF"/>
+                <circle cx="38" cy="46" r="4.5" fill="#222"/>
+                <circle cx="62" cy="46" r="4.5" fill="#222"/>
+                <circle cx="40" cy="44" r="1.5" fill="#FFF"/>
+                <circle cx="64" cy="44" r="1.5" fill="#FFF"/>
+                <ellipse cx="50" cy="55" rx="7" ry="5" fill="#3D2B1F"/>
+                <path d="M44 63 Q50 69 56 63" stroke="#FF1493" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                <path d="M70 65 Q85 55 80 40" stroke="#FFFFFF" stroke-width="6" fill="none" stroke-linecap="round"/>
+            </svg>
+        </div>
 
-    <!-- 2. Juju (Vira-lata Branca) - Direita Cima -->
-    <div class="dog-lateral right-2 md:right-6 top-20" style="width: 130px;" onclick="latir('juju', this)">
-        <div class="speech-bubble -top-8 left-1/2 -translate-x-1/2">WOOF! ✨</div>
-        <svg viewBox="0 0 100 100" class="w-full h-full">
-            <path d="M22 45 L32 15 L48 38 Z" fill="#F3E5DC"/>
-            <path d="M78 45 L68 15 L52 38 Z" fill="#F3E5DC"/>
-            <ellipse cx="50" cy="54" rx="28" ry="25" fill="#FFFFFF"/>
-            <circle cx="39" cy="48" r="4" fill="#1A1A1A"/>
-            <circle cx="61" cy="48" r="4" fill="#1A1A1A"/>
-            <circle cx="40" cy="46" r="1.2" fill="#FFF"/>
-            <circle cx="62" cy="46" r="1.2" fill="#FFF"/>
-            <ellipse cx="50" cy="56" rx="6" ry="4" fill="#111"/>
-            <path d="M46 63 Q50 68 54 63" stroke="#222" stroke-width="2" fill="none"/>
-            <polygon points="45,71 55,71 50,77" fill="#FF1493"/>
-        </svg>
-    </div>
+        <!-- 2. Juju (Vira-lata Branca) -->
+        <div class="dog-lateral right-2 md:right-6 top-20 w-20 md:w-28" onclick="latir('juju', this)">
+            <div class="speech-bubble -top-8 left-1/2 -translate-x-1/2">WOOF! ✨</div>
+            <svg viewBox="0 0 100 100" class="w-full h-full">
+                <path d="M22 45 L32 15 L48 38 Z" fill="#F3E5DC"/>
+                <path d="M78 45 L68 15 L52 38 Z" fill="#F3E5DC"/>
+                <ellipse cx="50" cy="54" rx="28" ry="25" fill="#FFFFFF"/>
+                <circle cx="39" cy="48" r="4" fill="#1A1A1A"/>
+                <circle cx="61" cy="48" r="4" fill="#1A1A1A"/>
+                <circle cx="40" cy="46" r="1.2" fill="#FFF"/>
+                <circle cx="62" cy="46" r="1.2" fill="#FFF"/>
+                <ellipse cx="50" cy="56" rx="6" ry="4" fill="#111"/>
+                <path d="M46 63 Q50 68 54 63" stroke="#222" stroke-width="2" fill="none"/>
+                <polygon points="45,71 55,71 50,77" fill="#FF1493"/>
+            </svg>
+        </div>
 
-    <!-- 3. Flor (Pinscher Preta) - Direita Baixo -->
-    <div class="dog-lateral right-2 md:right-6 bottom-16" style="width: 120px;" onclick="latir('flor', this)">
-        <div class="speech-bubble -top-8 left-1/2 -translate-x-1/2">LATIDO! 💖</div>
-        <svg viewBox="0 0 100 100" class="w-full h-full">
-            <path d="M25 40 L35 8 L48 32 Z" fill="#1A1A1A"/>
-            <path d="M75 40 L65 8 L52 32 Z" fill="#1A1A1A"/>
-            <ellipse cx="50" cy="54" rx="26" ry="23" fill="#222222"/>
-            <circle cx="36" cy="38" r="3.5" fill="#D97706"/>
-            <circle cx="64" cy="38" r="3.5" fill="#D97706"/>
-            <circle cx="40" cy="48" r="3.5" fill="#FFF"/>
-            <circle cx="60" cy="48" r="3.5" fill="#FFF"/>
-            <circle cx="40" cy="48" r="2" fill="#000"/>
-            <circle cx="60" cy="48" r="2" fill="#000"/>
-            <ellipse cx="50" cy="58" rx="10" ry="7" fill="#D97706"/>
-            <ellipse cx="50" cy="55" rx="4" ry="2.5" fill="#000"/>
-        </svg>
+        <!-- 3. Flor (Pinscher Preta) -->
+        <div class="dog-lateral right-2 md:right-6 bottom-16 w-20 md:w-28" onclick="latir('flor', this)">
+            <div class="speech-bubble -top-8 left-1/2 -translate-x-1/2">LATIDO! 💖</div>
+            <svg viewBox="0 0 100 100" class="w-full h-full">
+                <path d="M25 40 L35 8 L48 32 Z" fill="#1A1A1A"/>
+                <path d="M75 40 L65 8 L52 32 Z" fill="#1A1A1A"/>
+                <ellipse cx="50" cy="54" rx="26" ry="23" fill="#222222"/>
+                <circle cx="36" cy="38" r="3.5" fill="#D97706"/>
+                <circle cx="64" cy="38" r="3.5" fill="#D97706"/>
+                <circle cx="40" cy="48" r="3.5" fill="#FFF"/>
+                <circle cx="60" cy="48" r="3.5" fill="#FFF"/>
+                <circle cx="40" cy="48" r="2" fill="#000"/>
+                <circle cx="60" cy="48" r="2" fill="#000"/>
+                <ellipse cx="50" cy="58" rx="10" ry="7" fill="#D97706"/>
+                <ellipse cx="50" cy="55" rx="4" ry="2.5" fill="#000"/>
+            </svg>
+        </div>
     </div>
 
     <!-- Decorações de Fundo -->
@@ -137,12 +141,16 @@
                 <h1 class="text-3xl font-extrabold text-pink-custom flex items-center gap-2">
                     Controle de Cartões da Momo 💖
                 </h1>
-                <p class="text-xs text-pink-700 font-medium mt-1">Clique nas doguinhas nas laterais para ouvir o latido delas! 🐾</p>
+                <p class="text-xs text-pink-700 font-medium mt-1">Clique nas cadelinhas para ouvir o latido delas! 🐾</p>
             </div>
-            <!-- Botões de Backup / Arquivo -->
-            <div class="flex gap-2">
-                <button onclick="exportarDados()" class="bg-pink-100 text-pink-700 px-4 py-2 rounded-2xl text-sm font-medium hover:bg-pink-200 transition flex items-center gap-1 shadow-sm">📥 Baixar Backup</button>
-                <label class="bg-pink-100 text-pink-700 px-4 py-2 rounded-2xl text-sm font-medium hover:bg-pink-200 transition cursor-pointer flex items-center gap-1 shadow-sm">
+
+            <!-- Botões do Topo (Backup + Alternar Dogs) -->
+            <div class="flex flex-wrap gap-2">
+                <button id="btn-toggle-dogs" onclick="alternarDogs()" class="bg-pink-custom text-white px-3.5 py-2 rounded-2xl text-xs font-bold hover:bg-pink-custom-dark transition shadow-sm flex items-center gap-1">
+                    🐾 Ocultar Dogs
+                </button>
+                <button onclick="exportarDados()" class="bg-pink-100 text-pink-700 px-3.5 py-2 rounded-2xl text-xs font-medium hover:bg-pink-200 transition flex items-center gap-1 shadow-sm">📥 Baixar Backup</button>
+                <label class="bg-pink-100 text-pink-700 px-3.5 py-2 rounded-2xl text-xs font-medium hover:bg-pink-200 transition cursor-pointer flex items-center gap-1 shadow-sm">
                     📤 Carregar Backup <input type="file" id="input-importar" accept=".json" class="hidden" onchange="importarDados(event)">
                 </label>
             </div>
@@ -229,7 +237,30 @@
     </div>
 
     <script>
-        // Função de Latido (Web Audio API - Sem arquivos externos, funciona 100%)
+        // Função de Alternar Visualização dos Dogs
+        let dogsVisiveis = localStorage.getItem('dogs_visiveis') !== 'false';
+
+        function aplicarVisibilidadeDogs() {
+            const container = document.getElementById('container-dogs');
+            const btn = document.getElementById('btn-toggle-dogs');
+            if (dogsVisiveis) {
+                container.classList.remove('dogs-hidden');
+                btn.innerText = '🐾 Ocultar Dogs';
+            } else {
+                container.classList.add('dogs-hidden');
+                btn.innerText = '🐾 Mostrar Dogs';
+            }
+        }
+
+        function alternarDogs() {
+            dogsVisiveis = !dogsVisiveis;
+            localStorage.setItem('dogs_visiveis', dogsVisiveis);
+            aplicarVisibilidadeDogs();
+        }
+
+        aplicarVisibilidadeDogs();
+
+        // Função de Latido (Web Audio API)
         function latir(dog, element) {
             element.classList.add('barking');
             setTimeout(() => element.classList.remove('barking'), 1000);
@@ -245,9 +276,9 @@
                 let freq = 220;
                 let duration = 0.15;
 
-                if (dog === 'lunna') { freq = 180; duration = 0.2; } // Labradora (grave)
-                else if (dog === 'juju') { freq = 280; duration = 0.12; } // Vira-lata (médio)
-                else if (dog === 'flor') { freq = 450; duration = 0.09; } // Pinscher (agudo)
+                if (dog === 'lunna') { freq = 180; duration = 0.2; }
+                else if (dog === 'juju') { freq = 280; duration = 0.12; }
+                else if (dog === 'flor') { freq = 450; duration = 0.09; }
 
                 osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
                 osc.frequency.exponentialRampToValueAtTime(freq * 0.5, audioCtx.currentTime + duration);
