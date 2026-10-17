@@ -363,17 +363,23 @@
             }
         });
 
-        function calcularMesFatura(dataCompraStr, diaFechamento) {
+        // LÓGICA CORRIGIDA: Mapeia para o mês em que a fatura REALMENTE vence (considerando fechamento/vencimento)
+        function calcularMesFatura(dataCompraStr, diaFechamento, diaVencimento) {
             const data = new Date(dataCompraStr + 'T00:00:00');
             let ano = data.getFullYear();
-            let mes = data.getMonth();
+            let mes = data.getMonth(); // 0 a 11
             let dia = data.getDate();
 
+            // Se a compra foi feita no dia do fechamento ou depois, ela vai para a fatura do próximo mês fechado
             if (dia >= diaFechamento) {
                 mes += 1;
             }
 
-            let dataFatura = new Date(ano, mes, 1);
+            // O mês do vencimento (boleto) costuma ser o mês seguinte ao fechamento se o vencimento for no início do mês (ex: fecha em fev, vence em mar)
+            // Se o dia de vencimento for menor ou igual ao dia de fechamento (ou no mês seguinte), ajustamos para o mês do vencimento real:
+            let mesVencimento = mes + 1;
+
+            let dataFatura = new Date(ano, mesVencimento, 1);
             return dataFatura.toISOString().slice(0, 7);
         }
 
@@ -388,11 +394,12 @@
             const parcelas = parseInt(document.getElementById('gasto-parcelas').value);
 
             const cartaoObj = dados.cartoes.find(c => c.nome === nomeCartao);
-            const diaFechamento = cartaoObj ? cartaoObj.fechamento : 10;
+            const diaFechamento = cartaoObj ? cartaoObj.fechamento : 26;
+            const diaVencimento = cartaoObj ? cartaoObj.vencimento : 2;
 
             if (editId) {
                 dados.gastos = dados.gastos.filter(g => g.grupoId != editId);
-                let mesFaturaInicial = calcularMesFatura(dataCompra, diaFechamento);
+                let mesFaturaInicial = calcularMesFatura(dataCompra, diaFechamento, diaVencimento);
                 let [anoBase, mesBase] = mesFaturaInicial.split('-').map(Number);
                 const novoGrupoId = Date.now();
 
@@ -415,7 +422,7 @@
                 }
                 cancelarEdicao();
             } else {
-                let mesFaturaInicial = calcularMesFatura(dataCompra, diaFechamento);
+                let mesFaturaInicial = calcularMesFatura(dataCompra, diaFechamento, diaVencimento);
                 let [anoBase, mesBase] = mesFaturaInicial.split('-').map(Number);
                 const grupoId = Date.now();
 
